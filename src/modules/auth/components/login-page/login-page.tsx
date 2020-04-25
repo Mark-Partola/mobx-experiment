@@ -1,30 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
+import cn from 'classnames';
 import { observer } from 'mobx-react';
-import { useAuthStore } from '../../store/use-auth-store';
+import { AuthDescriptionPart } from './components/auth-description-part';
+import { AuthFormPart } from './components/auth-form-part';
 
 const LoginPage = observer(() => {
-  const authStore = useAuthStore();
+  const [switched, setSwitching] = React.useState(false);
+  const handleToggleMode = React.useCallback(
+    () => void setSwitching((it) => !it),
+    []
+  );
 
   return (
-    <div>
-      <StyledTitle>Login Page</StyledTitle>
-      <StyledLoginButton onClick={authStore.login}>Login</StyledLoginButton>
-    </div>
+    <StyledAuthPage className={cn({ switched })}>
+      <AuthDescriptionPart onToggleAuthMode={handleToggleMode} />
+      <AuthFormPart />
+    </StyledAuthPage>
   );
 });
 
-const StyledTitle = styled.div`
-  color: rebeccapurple;
-`;
+export const StyledAuthPage = styled.div`
+  --primary-auth-color: #3369fb;
+  --contrast-primary-auth-color: #fff;
 
-const StyledLoginButton = styled.button`
-  background-color: #99f;
-  color: #fff;
-
-  &:hover {
-    background-color: #779;
-  }
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
 `;
 
 export { LoginPage };
