@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { animated } from 'react-spring';
 
 export const StyledAuthFormPart = styled.div`
   position: absolute;
@@ -13,6 +14,11 @@ export const StyledAuthFormPart = styled.div`
   .switched & {
     transform: translateX(-100%);
   }
+`;
+
+export const StyledFormAnimatedSwitchContainer = styled(animated.div)`
+  position: absolute;
+  width: 100%;
 `;
 
 export const StyledAuthFormTitleLayout = styled.div`

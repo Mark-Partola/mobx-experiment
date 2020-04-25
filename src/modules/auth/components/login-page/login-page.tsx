@@ -2,20 +2,24 @@ import React from 'react';
 import styled from 'styled-components';
 import cn from 'classnames';
 import { observer } from 'mobx-react';
+import { AuthModes } from './constants';
 import { AuthDescriptionPart } from './components/auth-description-part';
 import { AuthFormPart } from './components/auth-form-part';
 
 const LoginPage = observer(() => {
-  const [switched, setSwitching] = React.useState(false);
+  const [authMode, setAuthMode] = React.useState(AuthModes.signIn);
   const handleToggleMode = React.useCallback(
-    () => void setSwitching((it) => !it),
+    () =>
+      void setAuthMode((mode) =>
+        mode === AuthModes.signIn ? AuthModes.signUp : AuthModes.signIn
+      ),
     []
   );
 
   return (
-    <StyledAuthPage className={cn({ switched })}>
+    <StyledAuthPage className={cn({ switched: authMode === AuthModes.signUp })}>
       <AuthDescriptionPart onToggleAuthMode={handleToggleMode} />
-      <AuthFormPart />
+      <AuthFormPart authMode={authMode} />
     </StyledAuthPage>
   );
 });
