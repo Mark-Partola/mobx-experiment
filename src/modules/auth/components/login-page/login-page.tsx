@@ -18,7 +18,10 @@ const LoginPage = observer(() => {
 
   return (
     <StyledAuthPage className={cn({ switched: authMode === AuthModes.signUp })}>
-      <AuthDescriptionPart onToggleAuthMode={handleToggleMode} />
+      <AuthDescriptionPart
+        authMode={authMode}
+        onToggleAuthMode={handleToggleMode}
+      />
       <AuthFormPart authMode={authMode} />
     </StyledAuthPage>
   );

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { animated } from 'react-spring';
 
 export const StyledAuthDescriptionPart = styled.div`
   position: absolute;
@@ -42,6 +43,13 @@ export const StyledAuthDescriptionPart = styled.div`
       transform: translateX(0%);
     }
   }
+`;
+
+export const StyledAnimatedDescriptionBox = styled(animated.div)`
+  position: absolute;
+  padding: 0 5%;
+  top: 35%;
+  width: 100%;
 `;
 
 export const StyledAuthDescription = styled.span`
