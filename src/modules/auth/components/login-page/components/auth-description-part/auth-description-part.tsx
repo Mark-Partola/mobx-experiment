@@ -15,12 +15,10 @@ interface IAuthDescriptionPartProps {
 
 const AuthDescriptionPart: React.FC<IAuthDescriptionPartProps> = React.memo(
   function AuthDescriptionPart(props) {
+    const isSignIn = props.authMode === AuthModes.signIn;
     const transition = useTransition(props.authMode, null, {
       from: {
-        transform:
-          props.authMode === AuthModes.signIn
-            ? 'translateX(-100%)'
-            : 'translateX(100%)',
+        transform: isSignIn ? 'translateX(-100%)' : 'translateX(100%)',
         opacity: 0,
       },
       enter: {
@@ -28,10 +26,7 @@ const AuthDescriptionPart: React.FC<IAuthDescriptionPartProps> = React.memo(
         opacity: 1,
       },
       leave: {
-        transform:
-          props.authMode === AuthModes.signIn
-            ? 'translateX(50%)'
-            : 'translateX(-50%)',
+        transform: isSignIn ? 'translateX(50%)' : 'translateX(-50%)',
         opacity: 0,
       },
       config: {
@@ -59,7 +54,7 @@ const AuthDescriptionPart: React.FC<IAuthDescriptionPartProps> = React.memo(
           )
         )}
         <StyledAuthButton className="switch" onClick={props.onToggleAuthMode}>
-          SIGN UP
+          {isSignIn ? 'SIGN UP' : 'SIGN IN'}
         </StyledAuthButton>
       </StyledAuthDescriptionPart>
     );
