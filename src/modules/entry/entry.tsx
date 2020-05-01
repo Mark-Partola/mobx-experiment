@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'mobx-react';
 import { getStores } from './registrator';
-import { LoginPage } from '../auth';
+import { Explorer } from '../explorer';
 
 import '../../styles/root.css';
 
@@ -13,7 +13,7 @@ const Entry: React.FC = () => {
   return (
     <React.StrictMode>
       <Provider {...stores}>
-        <LoginPage />
+        <Explorer />
       </Provider>
     </React.StrictMode>
   );
