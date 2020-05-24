@@ -1,32 +1,37 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { IFileMeta } from '../../../../../../types/IFileMeta';
 import { PopOver, usePopOver } from '../../../pop-over';
 import folderIcon from './assets/folder-icon.png';
 import fileIcon from './assets/file-icon.png';
 
 interface IFileProps {
-  name: string;
-  isDir: boolean;
+  meta: IFileMeta;
+  onRename: (params: { meta: IFileMeta; name: string }) => void;
 }
 
 export const File: React.FC<IFileProps> = React.memo(function File(props) {
+  const { onRename } = props;
   const popOver = usePopOver();
-  const inputLabelRef = React.useRef<HTMLInputElement>(null);
-  const [isEditLabel, setIsEditLabel] = React.useState(false);
+  const inputNameRef = React.useRef<HTMLInputElement>(null);
+  const [isEditName, setIsEditName] = React.useState(false);
 
   const handleRename = React.useCallback(() => {
-    setIsEditLabel(true);
+    setIsEditName(true);
   }, []);
 
   const handleStopEdit = React.useCallback(() => {
-    if (!inputLabelRef.current) {
+    if (!inputNameRef.current) {
       return;
     }
 
-    setIsEditLabel(false);
+    setIsEditName(false);
 
-    console.log(inputLabelRef.current.value);
-  }, [inputLabelRef]);
+    onRename({
+      meta: props.meta,
+      name: inputNameRef.current.value,
+    });
+  }, [inputNameRef, props.meta, onRename]);
 
   const handleKeyPress = React.useCallback(
     (event: React.KeyboardEvent) => {
@@ -40,23 +45,23 @@ export const File: React.FC<IFileProps> = React.memo(function File(props) {
   );
 
   React.useEffect(() => {
-    if (isEditLabel && inputLabelRef.current) {
-      inputLabelRef.current.focus();
+    if (isEditName && inputNameRef.current) {
+      inputNameRef.current.focus();
     }
-  }, [isEditLabel]);
+  }, [isEditName]);
 
   return (
     <StyledFile onContextMenu={popOver.openByEvent}>
-      <StyledIcon isDir={props.isDir} />
-      {isEditLabel ? (
+      <StyledIcon isDir={props.meta.isDir} />
+      {isEditName ? (
         <StyledNameInput
-          defaultValue={props.name}
-          ref={inputLabelRef}
+          defaultValue={props.meta.name}
+          ref={inputNameRef}
           onBlur={handleStopEdit}
           onKeyPress={handleKeyPress}
         />
       ) : (
-        <StyledName>{props.name}</StyledName>
+        <StyledName>{props.meta.name}</StyledName>
       )}
       <PopOver
         visible={popOver.visible}
@@ -91,14 +96,14 @@ const StyledIcon = styled.div<{ isDir?: boolean }>`
   cursor: pointer;
 `;
 
-const styledLabelMixin = css`
+const styledNameMixin = css`
   font-size: 10px;
   line-height: 1.5;
   margin-top: 0.5em;
 `;
 
 const StyledName = styled.div`
-  ${styledLabelMixin}
+  ${styledNameMixin}
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -106,6 +111,6 @@ const StyledName = styled.div`
 `;
 
 const StyledNameInput = styled.input`
-  ${styledLabelMixin}
+  ${styledNameMixin}
   width: 100%;
 `;
