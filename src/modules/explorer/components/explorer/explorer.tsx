@@ -20,8 +20,8 @@ const Explorer = () => {
   return (
     <StyledFilesLayout>
       {items.map((item) => (
-        <StyledFileItemLayout>
-          <File key={item.name} isDir={item.isDir} name={item.name} />
+        <StyledFileItemLayout key={item.name}>
+          <File isDir={item.isDir} name={item.name} />
         </StyledFileItemLayout>
       ))}
     </StyledFilesLayout>

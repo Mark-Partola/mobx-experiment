@@ -7,7 +7,7 @@ import { IPoint } from '../../../../types/IPoint';
 interface IPopOverProps {
   visible: boolean;
   position: IPoint;
-  items: { label: string }[];
+  items: { label: string; onSelect: () => void }[];
   onClose: (event: MouseEvent) => void;
 }
 
@@ -55,7 +55,7 @@ const PopOver: React.FC<IPopOverProps> = React.memo(function PopOver(props) {
             style={style}
           >
             {props.items.map((item) => (
-              <StyledPopOverItem key={item.label}>
+              <StyledPopOverItem key={item.label} onClick={item.onSelect}>
                 {item.label}
               </StyledPopOverItem>
             ))}
