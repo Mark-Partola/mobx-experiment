@@ -9,7 +9,7 @@ interface IFileProps {
   isDir: boolean;
 }
 
-export const File: React.FC<IFileProps> = (props) => {
+export const File: React.FC<IFileProps> = React.memo(function File(props) {
   const popOver = usePopOver();
   const inputLabelRef = React.useRef<HTMLInputElement>(null);
   const [isEditLabel, setIsEditLabel] = React.useState(false);
@@ -19,8 +19,25 @@ export const File: React.FC<IFileProps> = (props) => {
   }, []);
 
   const handleStopEdit = React.useCallback(() => {
+    if (!inputLabelRef.current) {
+      return;
+    }
+
     setIsEditLabel(false);
-  }, []);
+
+    console.log(inputLabelRef.current.value);
+  }, [inputLabelRef]);
+
+  const handleKeyPress = React.useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key !== 'Enter') {
+        return;
+      }
+
+      handleStopEdit();
+    },
+    [handleStopEdit]
+  );
 
   React.useEffect(() => {
     if (isEditLabel && inputLabelRef.current) {
@@ -36,6 +53,7 @@ export const File: React.FC<IFileProps> = (props) => {
           defaultValue={props.name}
           ref={inputLabelRef}
           onBlur={handleStopEdit}
+          onKeyPress={handleKeyPress}
         />
       ) : (
         <StyledName>{props.name}</StyledName>
@@ -54,7 +72,7 @@ export const File: React.FC<IFileProps> = (props) => {
       />
     </StyledFile>
   );
-};
+});
 
 const StyledFile = styled.div`
   width: 50px;
