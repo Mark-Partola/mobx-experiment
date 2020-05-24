@@ -1,59 +1,40 @@
 import React from 'react';
 import styled from 'styled-components';
-import { PopOver } from '../pop-over';
-import folderIcon from './assets/folder-icon.png';
-import fileIcon from './assets/file-icon.png';
-import { IPoint } from '../../../../types/IPoint';
+import { File } from './components/file';
+
+const items = [
+  { isDir: true, name: 'New folder' },
+  { isDir: true, name: 'New folder (1)' },
+  { isDir: false, name: 'New file' },
+  { isDir: false, name: 'New file (1)' },
+  { isDir: false, name: 'New file (2)' },
+  { isDir: false, name: 'New file (3)' },
+  { isDir: false, name: 'Super brand new file (4)' },
+  { isDir: false, name: 'New file (5)' },
+  { isDir: false, name: 'New file (6)' },
+  { isDir: false, name: 'New file (7)' },
+  { isDir: false, name: 'New file (8)' },
+];
 
 const Explorer = () => {
-  const [
-    contextMenuPosition,
-    setContextMenuPosition,
-  ] = React.useState<IPoint | null>(null);
-
-  const handleContextMenuOpen = React.useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setContextMenuPosition({ x: e.pageX, y: e.pageY });
-  }, []);
-
-  const handleContextMenuClose = React.useCallback(
-    () => setContextMenuPosition(null),
-    []
-  );
-
   return (
-    <>
-      <StyledFilesLayout onContextMenu={handleContextMenuOpen}>
-        <StyledFile isFolder={true} />
-        <StyledFile isFolder={true} />
-        <StyledFile />
-        <StyledFile />
-      </StyledFilesLayout>
-      {contextMenuPosition && (
-        <PopOver
-          position={contextMenuPosition}
-          onClose={handleContextMenuClose}
-        />
-      )}
-    </>
+    <StyledFilesLayout>
+      {items.map((item) => (
+        <StyledFileItemLayout>
+          <File key={item.name} isDir={item.isDir} name={item.name} />
+        </StyledFileItemLayout>
+      ))}
+    </StyledFilesLayout>
   );
 };
 
 const StyledFilesLayout = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 
-const StyledFile = styled.div<{ isFolder?: boolean }>`
-  width: 32px;
-  height: 32px;
-  background-image: url(${(props) => (props.isFolder ? folderIcon : fileIcon)});
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+const StyledFileItemLayout = styled.div`
   margin: 1vh 1vw;
-  cursor: pointer;
-  position: relative;
 `;
 
 export { Explorer };
