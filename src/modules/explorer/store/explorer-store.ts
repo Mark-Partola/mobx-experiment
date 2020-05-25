@@ -3,9 +3,9 @@ import { IFileMeta } from '../../../types/IFileMeta';
 
 export const EXPLORER_STORE_KEY = 'explorer';
 
-export class ExplorerStore {
+class Folder {
   @observable
-  files = [
+  public files = [
     { isDir: true, name: 'New folder', path: '/' },
     { isDir: true, name: 'New folder (1)', path: '/' },
     { isDir: false, name: 'New file', path: '/' },
@@ -20,7 +20,7 @@ export class ExplorerStore {
   ];
 
   @action
-  rename(params: { meta: IFileMeta; name: string }) {
+  public rename(params: { meta: IFileMeta; name: string }) {
     const file = this.files.find((file) => file.name === params.meta.name);
 
     if (!file) {
@@ -28,6 +28,20 @@ export class ExplorerStore {
       return window.console.log('File not found');
     }
 
+    // TODO: check conflict
+    // TODO: check empty name
     file.name = params.name;
+  }
+}
+
+export class ExplorerStore {
+  @observable
+  public paths: {
+    [path: string]: Folder;
+  } = {};
+
+  @action
+  public init(path: string) {
+    this.paths[path] = new Folder();
   }
 }

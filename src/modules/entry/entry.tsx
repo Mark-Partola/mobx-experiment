@@ -13,7 +13,8 @@ const Entry: React.FC = () => {
   return (
     <React.StrictMode>
       <Provider {...stores}>
-        <Explorer />
+        <Explorer path="/" />
+        <Explorer path="/home" />
       </Provider>
     </React.StrictMode>
   );
